@@ -1,17 +1,17 @@
 class Solution {
 public:
     int countNumbersWithUniqueDigits(int n) {
-        int count = 1;
-
         if (n == 0) return 1;
-        if (n == 1) return 10;
-        int comb = 9;
+        int ans = 10;      
+        int unique = 9;    
+        int available = 9;
 
-        for(int i = 0; i < n; i++){
-            count *= comb;
-            if (i != 0) comb--;
+        for (int i = 2; i <= n; i++) {
+            unique *= available;
+            ans += unique;
+            available--;
         }
-        
-        return count  + countNumbersWithUniqueDigits(n-1);
+
+        return ans;
     }
 };
