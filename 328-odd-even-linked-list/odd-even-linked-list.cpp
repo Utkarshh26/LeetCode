@@ -11,23 +11,21 @@
 class Solution {
 public:
     ListNode* oddEvenList(ListNode* head) {
-        vector<int> arr;
-        ListNode* temp = head;
+        if (head == nullptr || head->next == nullptr) {
+            return head;
+        }
 
-        while(temp){
-            arr.push_back(temp -> val);
-            temp = temp -> next;
+        ListNode* odd = head;
+        ListNode* even = head->next;
+        ListNode* evenhead = even;
+        while (even != nullptr && even->next != nullptr) {
+            odd->next = odd->next->next;
+            even->next = even->next->next;
+
+            odd = odd->next;
+            even = even->next;
         }
-        temp = head;
-        for(int i = 0; i < arr.size(); i+=2){
-            temp -> val = arr[i];
-            temp = temp -> next;
-        }
-        
-        for(int i = 1; i < arr.size(); i+=2){
-            temp -> val = arr[i];
-            temp = temp ->next;
-        }
+        odd->next = evenhead;
         return head;
     }
 };
