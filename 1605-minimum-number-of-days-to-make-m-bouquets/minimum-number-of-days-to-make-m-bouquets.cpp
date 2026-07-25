@@ -35,6 +35,10 @@ private:
 
 public:
     int minDays(vector<int>& bloomDay, int m, int k) {
+        if(1LL * m*k > bloomDay.size()){
+            return -1;
+        }
+        
         int days = -1, low = mini(bloomDay),high = maxi(bloomDay);
         while (low <= high) {
             int mid = low + (high - low) / 2;
