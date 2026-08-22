@@ -1,5 +1,6 @@
 class Solution {
 public:
+    typedef pair<int, int> p;
     vector<int> topKFrequent(vector<int>& nums, int k) {
         unordered_map<int, int> freq;
         for (int i = 0; i < nums.size(); i++) {
@@ -9,18 +10,19 @@ public:
                 freq[nums[i]] = 1;
             }
         }
-        vector<int> ans;
-        while (k--) {
-            int mxFreq = 0, ele =0;
 
-            for (auto &it : freq) {
-                if (it.second > mxFreq) {
-                    mxFreq = it.second;
-                    ele = it.first;
-                }
+        priority_queue<p, vector<p>, greater<p>> pq;
+        for(auto& it: freq){
+            int fre = it.second, val = it.first;
+            pq.push({fre, val});
+            if(pq.size() > k){
+                pq.pop();
             }
-            ans.push_back(ele);
-            freq[ele] = 0;
+        }
+        vector<int> ans;
+        while(!pq.empty()){
+            ans.push_back(pq.top().second);
+            pq.pop();
         }
         return ans;
     }
