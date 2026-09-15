@@ -9,7 +9,7 @@ private:
             return false;
         }
         visited[idx]= true;
-
+        
         if (idx+ arr[idx]< arr.size()){
             if (helper(arr, idx+ arr[idx])){
                 return true;
