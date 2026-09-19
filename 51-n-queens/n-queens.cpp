@@ -1,51 +1,39 @@
 class Solution {
     vector<vector<string>> ans;
-private:
-    bool isSafe(int row,int col,vector<string>& board,int n){
-        int x =row, y=col;
-        while(row >=0 && col>=0){
-            if(board[row][col] =='Q'){
-                return false;
-            }
-            row--; col--;
-        }
-        row =x; col=y;
-        while(col>=0){
-            if(board[row][col]=='Q'){
-                return false;
-            }
-            col--;
-        }
-        col =y;
-        while(row<n&& col>=0){
-            if(board[row][col]=='Q'){
-                return false;
-            }
-            col--; row++;
-        }
-        return true;
-    }    
-    void helper(int cols,int n, vector<string>& board){
-        if(cols ==n){
+private:    
+    void helper(int col, int n, vector<string>& board, vector<int>& rowUsed,
+                vector<int>& diag1, vector<int>& diag2) {
+
+        if (col == n){
             ans.push_back(board);
             return;
         }
-        for(int rows=0; rows <n; rows++){
-            if(isSafe(rows,cols,board,n)){
-                board[rows][cols] ='Q';
-                helper(cols+1,n,board);
-                board[rows][cols]='.';
+        for (int row = 0; row < n; row++) {
+            if (rowUsed[row]|| diag1[row +col] ||diag2[row- col+ n -1]){
+                continue;
             }
+            board[row][col] = 'Q';
+
+            rowUsed[row] = 1;
+            diag1[row + col] = 1;
+            diag2[row - col + n - 1] = 1;
+
+            helper(col + 1, n, board, rowUsed, diag1, diag2);
+
+            board[row][col] = '.';
+            rowUsed[row] = 0;
+            diag1[row + col] = 0;
+            diag2[row - col + n - 1] = 0;
         }
     }
 public:
     vector<vector<string>> solveNQueens(int n) {
-        vector<string> board(n);
-        string s(n,'.');
-        for(int i=0; i<n; i++){
-            board[i] =s;
-        }
-        helper(0,n,board);
+        vector<string> board(n, string(n, '.'));
+        vector<int> rowUsed(n, 0);
+
+        vector<int> diag1(2*n -1,0);
+        vector<int> diag2(2*n -1,0);
+        helper(0, n,board, rowUsed,diag1,diag2);
         return ans;
     }
 };
