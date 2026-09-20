@@ -1,28 +1,21 @@
 class Solution {
-private:
-    vector<int>points;
-    vector<int> dp;
-    int helper(int i) {
-        if(i <= 0){
-            return 0;
-        } 
-        if(dp[i]!= -1){
-            return dp[i];
-        }      
-
-        int skip =helper(i -1);
-        int take =points[i]+ helper(i- 2);
-        return dp[i]= max(skip,take);
-    }
 public:
     int deleteAndEarn(vector<int>& nums) {
+        vector<int> dp; 
+        vector<int>points;
         int maxi = *max_element(nums.begin(),nums.end());
         points.resize(maxi+ 1,0);
         for (int x :nums){
             points[x]+=x;
         }
+        dp.resize(maxi +2);
+        dp[0]=0; dp[1]=points[0];
 
-        dp.resize(maxi +1,-1);
-        return helper(maxi);
+        for(int i=2; i<dp.size();i++){
+            int taken= points[i-1]+dp[i-2];
+            int leave=dp[i-1];
+            dp[i] =max(taken,leave);
+        }
+        return dp.back();
     }
 };
