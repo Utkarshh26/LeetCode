@@ -1,5 +1,5 @@
 class Solution {
-public:
+private:
     int helper(int i, int j, vector<vector<int>>& triangle,
                vector<vector<int>>& dp) {
         if (i == triangle.size() - 1){
